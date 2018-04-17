@@ -1,0 +1,27 @@
+<h2> Top Posts Today on reddit </h2>
+<a href="/">Home</a>
+<a href="/results">Results</a>
+<br/>
+<br/>
+<table border=1>
+    <tr>
+        <th>Title</th>
+        <th>Score</th>
+        <th>Subreddit</th>
+        <th>Author</th>
+		<th>Link</th>
+		<th>Date</th>
+    </tr>
+{% for d in redditdata %}
+    <tr>
+        <td>{{d[1]}}</td>
+        <td>{{d[2]}}</td>
+        <td>{{d[3]}}</td>
+        <td>{{d[4]}}</td>
+        <td>{{d[5]}}</td>
+        <td>{{d[6]}}</td>
+    </tr>
+{% endfor %}
+</table>
+
+
