@@ -123,7 +123,7 @@ class TestDbs(unittest.TestCase):
         self.assertGreaterEqual(data[2][2],data[3][2])
         self.assertGreaterEqual(data[3][2],data[4][2])
 
-        self.assertEqual(data[0][8],post_id)
+        self.assertEqual(len(data[0]),5)
 
 
 
