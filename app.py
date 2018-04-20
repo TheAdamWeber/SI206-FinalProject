@@ -19,7 +19,7 @@ def index():
 def validate():
     code = request.args.get('code')
     model.reddit.auth.authorize(code)
-    return 'Test'#redirect('/')
+    return redirect('/')
 
 @app.route('/retrieve_data', methods=['GET','POST'])
 def retrieve_data():
