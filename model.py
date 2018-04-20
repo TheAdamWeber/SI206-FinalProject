@@ -9,7 +9,6 @@ from requests_oauthlib import OAuth1
 
 client_id = secret_data.CLIENT_ID
 client_secret = secret_data.CLIENT_SECRET
-redirect_uri = secret_data.REDIRECT_URI
 user_agent = secret_data.USER_AGENT
 
 consumer_key = secret_data.TWITTER_CONSUMER_KEY
@@ -21,7 +20,8 @@ access_secret = secret_data.TWITTER_ACCESS_SECRET
 REDDIT_DB = 'reddit.db'
 
 
-reddit = praw.Reddit(client_id=client_id,client_secret=client_secret,redirect_uri=redirect_uri,user_agent=user_agent)
+reddit = praw.Reddit(client_id=client_id,client_secret=client_secret,redirect_uri="http://localhost:5000",user_agent=user_agent)
+reddit_cache = 'reddit_cache.json'
 #auth = OAuth1(client_id,client_secret,redirect_uri,user_agent)
 #test = requests.get(reddit.auth.url(['identity'], '...', 'permanent')).text
 
@@ -149,7 +149,7 @@ def get_tweet_data(post_id):
 
 def retrieve_data(cache,limit):
 
-    subreddit = reddit.front.hot()
+    subreddit = reddit.front.hot(limit=limit)
 
     lis = []
 
@@ -171,7 +171,10 @@ def retrieve_data(cache,limit):
             lis.append(data)
             i += 1
 
-        with open('cache.txt', 'w') as outfile:
+        print("Limit: " + str(limit))
+
+
+        with open(reddit_cache, 'w') as outfile:
             json.dump(lis, outfile, indent=4)
 
 def init_dbs():
@@ -262,6 +265,9 @@ def get_reddit_data(sort="score"):
         '''
     elif sort == "subreddit":
         query = '''
+            SELECT Subreddit, AVG(Score)
+            FROM Posts
+            GROUP BY Subreddit
         '''
     cur.execute(query)
     data = cur.fetchall()
@@ -270,5 +276,3 @@ def get_reddit_data(sort="score"):
     return data
 
 init_dbs()
-retrieve_data(False,100)
-populate_reddit_data('cache.txt')

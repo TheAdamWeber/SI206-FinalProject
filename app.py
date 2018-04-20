@@ -2,23 +2,17 @@ from flask import Flask, render_template, request, Markup
 import model
 import praw
 from plotly.offline import plot
-from plotly.graph_objs import Scatter
+from plotly.graph_objs import Scatter, Bar
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return '''
-        <h1>reddit Frontpage Scraper</h1>
-        <ul>
-            <li><a href="/validate">Validate redit</li>
-            <li><a href="/retrieve_data">Start Scraping</li>
-        </ul>
-    '''
+    return render_template("index.html", authurl = model.reddit.auth.url(['identity'],'...','permanent'))
 
 @app.route('/validate')
 def validate():
-    return
+    return '-'
 
 @app.route('/retrieve_data', methods=['GET','POST'])
 def retrieve_data():
@@ -27,9 +21,11 @@ def retrieve_data():
 @app.route('/results', methods=['GET','POST'])
 def results():
     if request.method == 'POST':
-        use_cache = bool(request.form['getdata'])
-        model.retrieve_data(use_cache, 100)
-        model.populate_reddit_data('cache.txt')
+        use_cache = bool(int(request.form['getdata']))
+        number_posts = int(request.form['numberposts'])
+        print(number_posts)
+        model.retrieve_data(use_cache, number_posts)
+        model.populate_reddit_data(model.reddit_cache)
     return render_template("results.html")
 
 @app.route('/results_reddit_table')
@@ -61,14 +57,11 @@ def results_tweets_graph():
     twitter_data = []
     if request.method == 'POST':
         post_number = int(request.form['postnumber']) - 1
-        print(post_number)
         r_data = model.get_reddit_data()
         reddit_data = r_data[post_number]
         reddit_id = reddit_data[0]
         reddit_title = reddit_data[1]
 
-        print(reddit_id)
-        print(reddit_title)
 
         model.populate_tweets_for_post(reddit_title, reddit_id)
 
@@ -77,6 +70,23 @@ def results_tweets_graph():
         twitter_data = []
 
     return render_template('results_tweets_graph.html',twitterdata=twitter_data)
+
+@app.route('/results_subreddits')
+def results_subreddits():
+
+    data = model.get_reddit_data("subreddit")
+    subreddit = []
+    score = []
+    for d in data:
+        subreddit.append(d[0])
+        score.append(d[1])
+    sorted_subreddit = [subreddit for _, subreddit in sorted(zip(score,subreddit), reverse=True)]
+    sorted_score = sorted(score, reverse=True)
+
+    plot_div = plot([Bar(x=sorted_subreddit, y=sorted_score)], output_type='div')
+
+    return render_template('results_subreddits.html',bar_graph=Markup(plot_div))
+
 
 if __name__ == '__main__':
     model.init_dbs()

@@ -4,20 +4,18 @@
 <br/>
 <br/>
 <h4> Which post would you like to retrieve Tweets about? </h4>
-<form action="/results_tweets_graph" method="POST">
-	Post Number: <input type="number" name="postnumber"><br>
-    <input type="submit" value="Submit">
-</form> 
+
+
 <table border=1>
-    <tr>
-        <th>Title</th>
-        <th>Post Number</th>
-    </tr>
 {% for d in redditdata %}
     <tr>
         <td>{{d[1]}}</td>
-        <td>{{loop.index}}</td>
+        <td>
+            <form action="/results_tweets_graph" method="POST">
+                <input name="postnumber" type="hidden"  value={{loop.index}}>
+                <input type="submit" value="Tweets" style="margin-top: 20%;">
+            </form></td>
     </tr>
 {% endfor %}
 </table>
-
+</form>

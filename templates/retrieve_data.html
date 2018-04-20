@@ -1,7 +1,21 @@
 <h3>Would you like to use new or cached data?</h3>
 <form action="/results" method="POST">
-    <input type="radio" name="getdata" value="False"/> New Data <br/>
-    <input type="radio" name="getdata" value="True"/> Cached Data <br/>
+    <input type="radio" name="getdata" value="0"/> New Data <br/>
+    <div style="padding:0 0 10px 50px;">
+        <p> How many new posts would you like to retrieve? </p>
+        <select name="numberposts">
+            <option value="100">100</option>
+            <option value="150">150</option>
+            <option value="200">200</option>
+            <option value="250">250</option>
+            <option value="300">300</option>
+            <option value="350">350</option>
+            <option value="400">400</option>
+            <option value="450">450</option>
+            <option value="500">500</option>
+        </select>
+    </div>
+    <input type="radio" name="getdata" value="1"/> Cached Data <br/>
     <br/>
     <input type="submit" name="submitdata" value="Get Data"/>
     <br/>
