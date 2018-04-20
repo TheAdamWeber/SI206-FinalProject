@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, Markup
+from flask import Flask, render_template, request, Markup, redirect
 import model
 import praw
 from plotly.offline import plot
@@ -8,11 +8,19 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template("index.html", authurl = model.reddit.auth.url(['identity'],'...','permanent'))
+    reddit_user = ''
+    try:
+        reddit_user = str(model.reddit.user.me())
+    except:
+        pass
+    return render_template("index.html", authurl = model.reddit.auth.url(['identity','vote'],'...','permanent'), reddituser = reddit_user)
 
 @app.route('/validate')
 def validate():
-    return '-'
+    code = request.args.get('code')
+    print(model.reddit.auth.authorize(code))
+    print(model.reddit.user.me())
+    return redirect('/')
 
 @app.route('/retrieve_data', methods=['GET','POST'])
 def retrieve_data():
