@@ -22,8 +22,6 @@ REDDIT_DB = 'reddit.db'
 
 reddit = praw.Reddit(client_id=client_id,client_secret=client_secret,redirect_uri="http://localhost:5000/validate",user_agent=user_agent)
 reddit_cache = 'reddit_cache.json'
-#auth = OAuth1(client_id,client_secret,redirect_uri,user_agent)
-#test = requests.get(reddit.auth.url(['identity'], '...', 'permanent')).text
 
 
 
@@ -280,13 +278,4 @@ def get_reddit_data(sort="score"):
 
     return data
 
-def vote(select, post_number):
-    data = get_reddit_data("postid")
-    post_id = data[post_number]
-    post = reddit.submission(id=post_id)
-    if select == 'up':
-        post.upvote()
-    else:
-        post.downvote()
-    return
 

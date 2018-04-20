@@ -13,14 +13,13 @@ def index():
         reddit_user = str(model.reddit.user.me())
     except:
         pass
-    return render_template("index.html", authurl = model.reddit.auth.url(['identity','vote'],'...','permanent'), reddituser = reddit_user)
+    return render_template("index.html", authurl = model.reddit.auth.url(['identity','vote','read'],'...','permanent'), reddituser = reddit_user)
 
 @app.route('/validate')
 def validate():
     code = request.args.get('code')
-    print(model.reddit.auth.authorize(code))
-    print(model.reddit.user.me())
-    return redirect('/')
+    model.reddit.auth.authorize(code)
+    return 'Test'#redirect('/')
 
 @app.route('/retrieve_data', methods=['GET','POST'])
 def retrieve_data():
@@ -37,11 +36,6 @@ def results():
     return render_template("results.html")
 
 
-def vote(select,post_number):
-    model.vote(select, post_number)
-    return
-
-app.jinja_env.globals.update(vote=vote)
 
 @app.route('/results_reddit_table')
 def results_reddit_table():
