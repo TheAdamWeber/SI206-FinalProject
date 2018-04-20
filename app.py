@@ -36,8 +36,17 @@ def results():
         model.populate_reddit_data(model.reddit_cache)
     return render_template("results.html")
 
+
+def vote(select,post_number):
+    model.vote(select, post_number)
+    return
+
+app.jinja_env.globals.update(vote=vote)
+
 @app.route('/results_reddit_table')
 def results_reddit_table():
+
+
     data = model.get_reddit_data()
     return render_template("results_reddit_table.html",redditdata=data)
 

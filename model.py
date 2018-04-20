@@ -268,6 +268,12 @@ def get_reddit_data(sort="score"):
             SELECT Subreddit, AVG(Score)
             FROM Posts
             GROUP BY Subreddit
+    '''
+    elif sort == "postid":
+        query = '''
+            SELECT PostId
+            FROM Posts
+            ORDER BY Score DESC
         '''
     cur.execute(query)
     data = cur.fetchall()
@@ -275,4 +281,13 @@ def get_reddit_data(sort="score"):
 
     return data
 
-init_dbs()
+def vote(select, post_number):
+    data = get_reddit_data("postid")
+    post_id = data[post_number]
+    post = reddit.submission(id=post_id)
+    if select == 'up':
+        post.upvote()
+    else:
+        post.downvote()
+    return
+
