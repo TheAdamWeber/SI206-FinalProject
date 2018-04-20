@@ -11,9 +11,6 @@
         <th>Author</th>
 		<th>Link</th>
 		<th>Date</th>
-        <th>Upvote</th>
-        <th>Downvote</th>
-    </tr>
 {% for d in redditdata %}
     <tr>
         <td>{{d[1]}}</td>
@@ -22,8 +19,6 @@
         <td>{{d[4]}}</td>
         <td><a href="{{d[5]}}">Link</a></td>
         <td>{{d[6]}}</td>
-        <td><a href="{{ vote('up',loop.index) }}">Upvote</a></td>
-        <td><a href="{{ vote('down',loop.index) }}">Downvote</a></td>
     </tr>
 {% endfor %}
 </table>

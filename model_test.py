@@ -77,7 +77,7 @@ class TestDbs(unittest.TestCase):
 
         self.assertNotEqual(len(data3),len(data))
 
-    # Test DB querys to sort and retrieve data
+    # Test DB querys to sort and retrieve data with the correct number of parameters
 
     def testGetRedditData(self):
 

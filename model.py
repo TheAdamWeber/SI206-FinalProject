@@ -171,8 +171,6 @@ def retrieve_data(cache,limit):
             lis.append(data)
             i += 1
 
-        print("Limit: " + str(limit))
-
 
         with open(reddit_cache, 'w') as outfile:
             json.dump(lis, outfile, indent=4)
@@ -234,8 +232,9 @@ def populate_reddit_data(name):
     query = 'DELETE FROM Posts'
 
     cur.execute(query)
-
-    data = json.load(open(name))
+    rfile = open(name)
+    data = json.load(rfile)
+    rfile.close()
     for item in data:
         insertion = (item['id'],item['title'],item['score'],item['subreddit'],item['author'],item['url'],item['date'])
         statement = '''
