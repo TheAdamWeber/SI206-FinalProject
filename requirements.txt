@@ -51,7 +51,7 @@ python-debian==0.1.27
 python-systemd==231
 pytz==2018.3
 pyxdg==0.25
-reportlab==3.3.0
+reportlab==3.5.55
 requests==2.18.4
 requests-oauthlib==0.8.0
 sessioninstaller==0.0.0
